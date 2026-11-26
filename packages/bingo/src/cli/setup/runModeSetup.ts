@@ -21,6 +21,7 @@ import { prepareGitRepository } from '../repository/prepareGitRepository.ts';
 import { resolveLocalRepository } from '../repository/resolveLocalRepository.ts';
 import { cliStatuses } from '../status.ts';
 import type { ModeResults } from '../types.ts';
+import type { RemoteRepositoryVisibility } from '../remotes/types.ts';
 import { makeRelative } from '../utils.ts';
 
 export interface RunModeSetupSettings<
@@ -33,6 +34,7 @@ export interface RunModeSetupSettings<
   from: string;
   offline?: boolean;
   remote?: boolean;
+  repoVisibility?: RemoteRepositoryVisibility;
   repository?: string;
   rerunCommand: string;
   skips?: RequestedSkips;
@@ -50,6 +52,7 @@ export async function runModeSetup<
   from,
   offline = false,
   remote: requestedRemote,
+  repoVisibility = 'public',
   rerunCommand,
   skips = {},
   template,
@@ -116,7 +119,7 @@ export async function runModeSetup<
   const { message, remote, repositoryType } = await resolveLocalRepository(
     display,
     { repository, ...baseOptions.completed },
-    { offline, remote: requestedRemote },
+    { offline, remote: requestedRemote, repoVisibility },
     system,
     template,
   );

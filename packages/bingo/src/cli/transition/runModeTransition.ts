@@ -20,6 +20,7 @@ import { createInitialCommit } from '../repository/createInitialCommit.ts';
 import { resolveLocalRepository } from '../repository/resolveLocalRepository.ts';
 import { cliStatuses } from '../status.ts';
 import type { ModeResults } from '../types.ts';
+import type { RemoteRepositoryVisibility } from '../remotes/types.ts';
 import { clearTemplateFiles } from './clearTemplateFiles.ts';
 import { getForkedRepositoryLocator } from './getForkedRepositoryLocator.ts';
 import { readConfigSettings } from './readConfigSettings.ts';
@@ -35,6 +36,7 @@ export interface RunModeTransitionSettings<
   from: string;
   offline?: boolean;
   remote?: boolean;
+  repoVisibility?: RemoteRepositoryVisibility;
   rerunCommand: string;
   skips?: RequestedSkips;
   template: Template<OptionsShape, Refinements>;
@@ -51,6 +53,7 @@ export async function runModeTransition<
   from,
   offline = false,
   remote: requestedRemote,
+  repoVisibility = 'public',
   rerunCommand,
   skips = {},
   template,
@@ -137,7 +140,7 @@ export async function runModeTransition<
   const { message, remote } = await resolveLocalRepository(
     display,
     { repository: directory, ...baseOptions.completed },
-    { offline, remote: requestedRemote },
+    { offline, remote: requestedRemote, repoVisibility },
     system,
     template,
   );
