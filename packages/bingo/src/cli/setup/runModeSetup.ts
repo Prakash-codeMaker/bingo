@@ -84,6 +84,14 @@ export async function runModeSetup<
     ...providedTemplateOptions,
   };
 
+  const rerunOptions = {
+    ...providedOptions,
+    ...(requestedRemote ? { remote: true } : {}),
+    ...(repoVisibility === 'private'
+      ? { 'repo-visibility': repoVisibility }
+      : {}),
+  };
+
   const preparedOptions = await runSpinnerTask(
     display,
     'Inferring default options from system',
@@ -97,7 +105,7 @@ export async function runModeSetup<
     },
   );
   if (preparedOptions instanceof Error) {
-    logRerunSuggestion(rerunCommand, providedOptions);
+    logRerunSuggestion(rerunCommand, rerunOptions);
     return { status: cliStatuses.error };
   }
 

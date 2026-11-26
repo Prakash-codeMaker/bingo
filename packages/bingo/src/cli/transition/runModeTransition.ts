@@ -72,9 +72,17 @@ export async function runModeTransition<
 
   const providedOptions = parseZodArgs(argv, template.options);
 
+  const rerunOptions = {
+    ...providedOptions,
+    ...(requestedRemote ? { remote: true } : {}),
+    ...(repoVisibility === 'private'
+      ? { 'repo-visibility': repoVisibility }
+      : {}),
+  };
+
   const loadedConfig = await readConfigSettings(configFile, directory, template);
   if (loadedConfig instanceof Error) {
-    logRerunSuggestion(rerunCommand, providedOptions);
+    logRerunSuggestion(rerunCommand, rerunOptions);
     return { error: loadedConfig, status: cliStatuses.error };
   }
 
@@ -83,7 +91,7 @@ export async function runModeTransition<
   if (repositoryLocator) {
     const uncommittedChanges = await checkUncommittedChanges(system.runner);
     if (uncommittedChanges !== 'clean') {
-      logRerunSuggestion(rerunCommand, providedOptions);
+      logRerunSuggestion(rerunCommand, rerunOptions);
       return {
         error: new Error(
           uncommittedChanges === 'changes'
@@ -124,7 +132,7 @@ export async function runModeTransition<
       },
     ));
   if (preparedOptions instanceof Error) {
-    logRerunSuggestion(rerunCommand, providedOptions);
+    logRerunSuggestion(rerunCommand, rerunOptions);
     return { status: cliStatuses.error };
   }
 
