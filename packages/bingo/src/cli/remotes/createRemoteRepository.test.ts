@@ -89,6 +89,7 @@ describe(createRemoteRepository, () => {
       ].join('\n'),
     );
   });
+
   it('creates a private GitHub repository when private visibility is requested', async () => {
     mockNewGitHubRepository.mockClear();
 

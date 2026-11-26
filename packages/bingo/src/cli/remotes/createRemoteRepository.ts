@@ -7,9 +7,9 @@ import { newGitHubRepository, type RepositoryLocator } from 'new-github-reposito
 import type { AnyShape } from '../../types/shapes.ts';
 import type { Template } from '../../types/templates.ts';
 import type { ClackDisplay } from '../display/createClackDisplay.ts';
-import type { RemoteRepositoryVisibility } from './types.ts';
 import { runSpinnerTask } from '../display/runSpinnerTask.ts';
 import { prepareGitRepository } from '../repository/prepareGitRepository.ts';
+import type { RemoteRepositoryVisibility } from './types.ts';
 
 export async function createRemoteRepository<
   OptionsShape extends AnyShape = AnyShape,

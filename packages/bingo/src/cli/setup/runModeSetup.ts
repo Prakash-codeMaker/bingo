@@ -17,11 +17,11 @@ import { cliMessages } from '../messages.ts';
 import { parseZodArgs } from '../parsers/parseZodArgs.ts';
 import { promptForDirectory } from '../prompts/promptForDirectory.ts';
 import { promptForOptionSchemas } from '../prompts/promptForOptionSchemas.ts';
+import type { RemoteRepositoryVisibility } from '../remotes/types.ts';
 import { prepareGitRepository } from '../repository/prepareGitRepository.ts';
 import { resolveLocalRepository } from '../repository/resolveLocalRepository.ts';
 import { cliStatuses } from '../status.ts';
 import type { ModeResults } from '../types.ts';
-import type { RemoteRepositoryVisibility } from '../remotes/types.ts';
 import { makeRelative } from '../utils.ts';
 
 export interface RunModeSetupSettings<
