@@ -59,7 +59,7 @@ export const inferExistingBlocks = <OptionsShape extends AnyShape, Refinements>(
       .filter((x) => !!x)
       .reduce(mergeCreations, {});
     const counted = countMatchedFilePaths(files, existingPresetProduction.files);
-    const percentage = counted.matched / counted.created;
+    const percentage = counted.matched / (counted.created + counted.missed);
 
     if (record) {
       if (percentage > record.percentage) {
