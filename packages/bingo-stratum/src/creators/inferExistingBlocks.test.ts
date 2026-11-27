@@ -214,6 +214,42 @@ describe('inferPreset', () => {
 
       expect(actual.preset).toBe('high-percentage');
     });
+
+    it('prefers a preset with fewer missing generated files', () => {
+      const blockWithExtraFiles = base.createBlock({
+        produce() {
+          return {
+            files: {
+              c: '...',
+              d: '...',
+              e: '...',
+              f: '...',
+            },
+          };
+        },
+      });
+      const presetWithFewerFiles = base.createPreset({
+        about: { name: 'Fewer Files' },
+        blocks: [blockAB],
+      });
+      const presetWithMissingFiles = base.createPreset({
+        about: { name: 'Missing Files' },
+        blocks: [blockAB, blockWithExtraFiles],
+      });
+      const template = base.createStratumTemplate({
+        presets: [presetWithFewerFiles, presetWithMissingFiles],
+      });
+
+      const actual = inferExistingBlocks(
+        {
+          files: { a: '...', b: '...', c: '...' },
+          options: { name: '...' },
+        },
+        template,
+      );
+
+      expect(actual.preset).toBe('fewer-files');
+    });
   });
 
   describe('previous file paths', () => {
